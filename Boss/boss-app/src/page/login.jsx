@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Card, Form, Input, Button } from 'antd';
-import axios from 'axios';
 
 function Login(props){
 	function onFinish(values){
@@ -9,11 +8,6 @@ function Login(props){
 	function onRegister(){
 		props.history.push('/register')
 	}
-	useEffect(()=>{
-		axios.get('/user/info').then(res=>{
-			console.log(res)
-		})
-	},[])
 	return (
 		<Card title="登录页面" style={{padding:'50px 20px'}}>
 			<Form

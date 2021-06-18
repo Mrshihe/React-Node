@@ -1,9 +1,12 @@
 import React from 'react'
 import { Card, Form, Input, Button, Radio } from 'antd';
+import axios from 'axios';
 
 function Register(){
   function onFinish(values){
-		console.log('Finish:', values);
+		axios.post('/user/register',values).then(res=>{
+			console.log(res)
+		})
 	}
   return (
 		<Card title="注册页面" style={{padding:'50px 20px'}}>
