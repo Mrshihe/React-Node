@@ -1,9 +1,23 @@
 import React from 'react'
-import { Card, Form, Input, Button } from 'antd';
+import { Card, Form, Input, Button, message } from 'antd';
+import axios from 'axios';
 
 function Login(props){
 	function onFinish(values){
-		console.log('Finish:', values);
+		const {username, password} = values
+		axios.post('/user/login',{username,password}).then(res=>{
+			if(res.data.code === 0){
+				message.success({
+					content:'登录成功',
+					duration: 1.5
+				})
+			}else{
+				message.error({
+					content: res.data.msg,
+					duration: 1.5
+				})
+			}
+		})
 	}
 	function onRegister(){
 		props.history.push('/register')

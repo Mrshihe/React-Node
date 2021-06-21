@@ -9,10 +9,12 @@ class AuthRoute extends React.Component {
       axios.get('/user/info').then(res=>{
         console.log(res)
       })
+    }else{
+      return null
     }
   }
   render(){
-    return <p>AuthRoute</p>
+    return null
   }
 }
 export default withRouter(AuthRoute)
