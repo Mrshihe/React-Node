@@ -4,12 +4,16 @@ import axios from 'axios';
 
 function Login(props){
 	function onFinish(values){
-		const {username, password} = values
+		const {username, password, } = values
 		axios.post('/user/login',{username,password}).then(res=>{
 			if(res.data.code === 0){
+				const { type } = res.data.data
 				message.success({
 					content:'登录成功',
-					duration: 1.5
+					duration: 1.5,
+					onClose: ()=>{
+						type === 'staff' ? props.history.push('/staff') : props.history.push('/boss')
+					}
 				})
 			}else{
 				message.error({

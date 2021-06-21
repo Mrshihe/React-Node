@@ -17,7 +17,19 @@ Router.get('/list',function(req, res){
   })
 })
 Router.get('/info',function(req, res){
-  res.json({code:1})
+  const { userid } = req.cookies
+  if(!userid){
+    res.json({code:1})
+  }else{
+    // {'password': 0} 返回字段不显示password字段
+    User.findOne({_id:userid},{'password':0},function(err,doc){
+      if(err){
+        return res.json({code:1,msg:'服务器繁忙,请稍后重试'})
+      }
+      return res.json({code:0, data:doc})
+    })
+  }
+  
 })
 Router.post('/register',function(req, res){
   const { username, password, radioGroup } = req.body
@@ -45,6 +57,8 @@ Router.post('/login',function(req,res){
     if(!doc){
       return res.json({code:1, msg:'用户名或密码不正确'})
     }else{
+      // 存储用户cookie
+      res.cookie('userid', doc._id)
       return res.json({code:0, data:doc})
     }
   })

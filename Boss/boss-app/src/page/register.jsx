@@ -1,11 +1,21 @@
 import React from 'react'
-import { Card, Form, Input, Button, Radio } from 'antd';
+import { Card, Form, Input, Button, Radio, message } from 'antd';
 import axios from 'axios';
 
-function Register(){
+function Register(props){
   function onFinish(values){
 		axios.post('/user/register',values).then(res=>{
-			console.log(res)
+			if(res.data.code === 0){
+				message.success({
+					content: '注册成功',
+					duration: 1.5,
+					onClose:()=>{
+						props.history.push('/login')
+					}
+				})
+			}else{
+				message.error(res.data.msg,1.5)
+			}
 		})
 	}
   return (
