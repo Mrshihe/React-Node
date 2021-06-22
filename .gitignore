@@ -1,6 +1,7 @@
 .DS_Store
 /Boss/boss-app/node_modules/
 /Boss/boss-serve/node_modules/
+/Boss/boss-serve/uploadImgs/
 /Boss/boss-app/dist/
 /Boss/boss-serve/dist/
 npm-debug.log*

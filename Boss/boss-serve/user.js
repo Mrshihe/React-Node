@@ -69,6 +69,7 @@ Router.post('/login',function(req,res){
 })
 
 Router.post('/upload',function(req,res){
+  const origin = req.headers.origin
   const form = new formidable.IncomingForm();
   form.parse(req, function(error, fields, files) {
     const type = files.file.type
@@ -76,10 +77,11 @@ Router.post('/upload',function(req,res){
     const imgPath = path.join(__dirname, '/uploadImgs')
 		// 如果目录不存在则创建
 		if (!fs.existsSync(imgPath)) fs.mkdirSync(imgPath)
-    // 将图片存入指定目录
-    fs.writeFileSync(`${imgPath}/${new Date().getTime()}.${extName}`, fs.readFileSync(files.file.path));
+    const fileName = `${new Date().getTime()}.${extName}`
+    // 保存图片
+    fs.writeFileSync(`${imgPath}/${fileName}`, fs.readFileSync(files.file.path));
+    res.json({code:0, data: `${origin}${fileName}`})
   })
-  res.json({code:0,msg:'上传触发'})
 })
 
 module.exports = Router
