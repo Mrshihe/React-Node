@@ -1,17 +1,29 @@
 import React from 'react'
-import { Form, Input, Button, Upload} from 'antd'
+import { Form, Input, Button, Upload, message} from 'antd'
+import axios from 'axios';
+
+function normFile(e){
+  if (Array.isArray(e)) {
+    return e;
+  }
+  return e && e.fileList;
+}
 
 class Boss extends React.Component {
   onFinish = (values) =>{
-    console.log( values )
+    const data = {...values,avatar:values.avatar[0].response.data}
+    axios.post('/user/update',data).then(res=>{
+      if(res.data.code===0){
+        message.success('更新成功', 1.5)
+      }else{
+        message.error(res.msg || '稍后重试', 1.5)
+      }
+    })
   }
   render(){
     return (
       <div style={{padding:'30px'}}>
         <h2>完善BOSS信息</h2>
-        <Upload name="file" action="/user/upload">
-          <Button>点击上传</Button>
-        </Upload>
         <Form
           name="basic"
           onFinish={ this.onFinish }
@@ -26,9 +38,13 @@ class Boss extends React.Component {
           <Form.Item
             name="avatar"
             label="公司LOGO"
+            valuePropName="fileList"
+            getValueFromEvent={normFile}
             rules={[{ required: true, message: '请上传公司logo!' }]}
           >
-            <Input.Password />
+            <Upload name="file" action="/tools/upload">
+              <Button>点击上传</Button>
+            </Upload>
           </Form.Item>
           <Form.Item
             name="desc"

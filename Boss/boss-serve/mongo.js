@@ -15,7 +15,7 @@ const models = {
     desc: {type: String}, // 个人/公司简介
     title: {type: String}, // 职位名称
     company: {type: String}, // 公司名称
-    money: {type: Number}, // 薪资
+    money: {type: String}, // 薪资
     jobrequirements: {type: String} //职位要求
   }
 }
