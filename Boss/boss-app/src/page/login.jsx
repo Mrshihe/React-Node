@@ -7,12 +7,15 @@ function Login(props){
 		const {username, password, } = values
 		axios.post('/user/login',{username,password}).then(res=>{
 			if(res.data.code === 0){
-				const { type } = res.data.data
+				const { type, title } = res.data.data
 				message.success({
 					content:'登录成功',
 					duration: 1.5,
 					onClose: ()=>{
-						type === 'staff' ? props.history.push('/staff') : props.history.push('/boss')
+						type === 'staff' ? 
+							title ? props.history.push('/staff') : props.history.push('/staffinfo') 
+						: 
+						  title ? props.history.push('/boss') : props.history.push('/bossinfo')
 					}
 				})
 			}else{

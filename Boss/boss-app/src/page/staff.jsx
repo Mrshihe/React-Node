@@ -1,10 +1,8 @@
 import React from 'react'
 
-class Staff extends React.Component {
-  render(){
-    return (
-      <div>Staff信息页</div>
-    )
-  }
+function Staff(){
+  return(
+    <div>staff 页面</div>
+  )
 }
 export default Staff
