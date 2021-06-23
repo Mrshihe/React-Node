@@ -53,15 +53,18 @@ code {
   height: 45px;
   background-color: #108ee9;
   color: #fff;
+  z-index: 9;
 }
 .skeletonWrapper{
   padding-top: 45px;
+  padding-bottom: 50px;
 }
 
 .tabsBarWrap{
   position: fixed;
   width: 100%;
   bottom: 0;
+  z-index: 9;
 }
 .tabsBarWrap>*{
   box-sizing: border-box;
@@ -139,4 +142,21 @@ code {
   text-align: center;
   margin: 3px 0 0;
   line-height: 1;
+}
+
+.staffWrapper{
+  padding: 10px;
+  background-color: #f1f1f1;
+}
+.staffWrapper .ant-card-body{
+  padding: 15px;
+  font-size: 14px;
+}
+.staffWrapper .label{
+  font-size: 16px;
+  line-height: 22px;
+  margin-bottom: 5px;
+}
+.staffWrapper .label+p{
+  text-indent: 1em;
 }

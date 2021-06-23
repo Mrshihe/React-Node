@@ -13,7 +13,7 @@ class AuthRoute extends React.Component {
           const { name, type, title } = res.data.data
           this.props.userLoginAction({name,type})
           type==='staff' ? 
-            title ? this.props.history.push('/staffinfo') : this.props.history.push('/staffinfo') 
+            title ? this.props.history.push('/staff') : this.props.history.push('/staffinfo') 
           : 
             title ? this.props.history.push('/boss') : this.props.history.push('/bossinfo')
         }else{

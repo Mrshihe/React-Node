@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Switch, Route } from 'react-router-dom'
 
 import Boss from '../page/boss'
 import Staff from '../page/staff'
@@ -12,7 +13,6 @@ function User(){
 }
 class SkeletonPage extends React.Component{
   render(){
-    console.log(this.props)
     const { UserType } = this.props
     const { pathname } = this.props.location
     const navList = [
@@ -50,13 +50,19 @@ class SkeletonPage extends React.Component{
     return (
       <div className="skeletonWrapper">
         <div className="headerNav">{navList.find(v=>v.path===pathname).title}</div>
-        {/*  */}
+        <Switch>
+        {
+          navList.map(v => 
+            <Route key={v.path} path={v.path} component={ v.component }></Route>
+          )
+        }
+        </Switch>
         <div className="tabsBarWrap">
           <div className="tabsBar">
             {
               navList.filter(v=>!v.hide).map(v=>{
                 return(
-                  <div className="tabBar" key={v.path}>
+                  <div className="tabBar" key={v.path} onClick={ ()=> this.props.history.push(v.path) }>
                     <div className="icon">
                       <span className="badge">
                         <div 
