@@ -73,10 +73,16 @@ Router.post('/login',function(req,res){
       return res.json({code:1, msg:'用户名或密码不正确'})
     }else{
       // 存储用户cookie
-      res.cookie('userid', doc._id)
+      res.cookie('userid', doc._id, {
+        httpOnly: true
+      })
       return res.json({code:0, data:doc})
     }
   })
+})
+Router.post('/logout',function(req,res){
+  res.clearCookie('userid')
+  res.json({code:0, msg:'您已注销'})
 })
 
 module.exports = Router

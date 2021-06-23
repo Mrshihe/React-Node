@@ -4,13 +4,12 @@ import { Switch, Route } from 'react-router-dom'
 
 import Boss from '../page/boss'
 import Staff from '../page/staff'
+import User from '../page/person'
 
 function Msg(){
   return <h2>消息列表</h2>
 }
-function User(){
-  return <h2>个人中心</h2>
-}
+
 class SkeletonPage extends React.Component{
   render(){
     const { UserType } = this.props

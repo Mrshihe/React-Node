@@ -160,3 +160,8 @@ code {
 .staffWrapper .label+p{
   text-indent: 1em;
 }
+
+.personWrapper .quitButton{
+  display: block;
+  margin: 80px auto 20px;
+}
