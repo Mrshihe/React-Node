@@ -1,6 +1,8 @@
 import React from 'react'
 import { Card, Form, Input, Button, message } from 'antd';
 import axios from 'axios';
+import { connect } from 'react-redux'
+import { userLoginAction  } from '../redux/actions'
 
 function Login(props){
 	function onFinish(values){
@@ -8,6 +10,7 @@ function Login(props){
 		axios.post('/user/login',{username,password}).then(res=>{
 			if(res.data.code === 0){
 				const { type, title } = res.data.data
+				props.userLoginAction({name:username,type})
 				message.success({
 					content:'登录成功',
 					duration: 1.5,
@@ -59,4 +62,7 @@ function Login(props){
 		</Card>	
 	)
 }
-export default Login
+const mapDispatchToProps = {
+  userLoginAction
+}
+export default connect(null,mapDispatchToProps)(Login)

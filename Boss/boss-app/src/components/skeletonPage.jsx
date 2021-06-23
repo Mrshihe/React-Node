@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 import Boss from '../page/boss'
 import Staff from '../page/staff'
@@ -11,6 +12,8 @@ function User(){
 }
 class SkeletonPage extends React.Component{
   render(){
+    console.log(this.props)
+    const { UserType } = this.props
     const { pathname } = this.props.location
     const navList = [
       {
@@ -18,14 +21,16 @@ class SkeletonPage extends React.Component{
 				text:'牛人',
 				icon:'staff',
 				title:'牛人列表',
-				component: Boss
+				component: Boss,
+        hide: UserType === 'staff'
 			},
 			{
 				path:'/staff',
 				text:'boss',
 				icon:'boss',
 				title:'BOSS列表',
-				component: Staff
+				component: Staff,
+        hide: UserType === 'boss'
 			},
 			{
 				path:'/message',
@@ -73,4 +78,9 @@ class SkeletonPage extends React.Component{
   }
 }
 
-export default SkeletonPage
+const mapStateToProps = state => ({
+  UserName: state.name,
+  UserType: state.type
+})
+
+export default connect(mapStateToProps,null)(SkeletonPage)
