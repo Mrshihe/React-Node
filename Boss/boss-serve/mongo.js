@@ -19,12 +19,12 @@ const models = {
     jobrequirements: {type: String} //职位要求
   },
   chat:{
-    chatid: { type: String, require: true},
-    from: { type:String, require: true },
-    to: { type:String, require: true },
-    isRead: { type: Boolean, default: false },
-    content: { type:String, require: true },
-    createTime: { type:Number, default: new Date().getTime() }
+    chatid: { type: String, require: true}, //唯一id
+    from: { type:String, require: true }, //发送人
+    to: { type:String, require: true }, // 接收人
+    isRead: { type: Boolean, default: false }, // 是否已读
+    content: { type:String, require: true }, // 消息内容
+    createTime: { type:Number, default: new Date().getTime() } // 发送时间
   }
 }
 
