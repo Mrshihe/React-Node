@@ -9,8 +9,8 @@ function Login(props){
 		const {username, password, } = values
 		axios.post('/user/login',{username,password}).then(res=>{
 			if(res.data.code === 0){
-				const { type, title } = res.data.data
-				props.userLoginAction({name:username,type})
+				const { type, title, _id } = res.data.data
+				props.userLoginAction({name:username,type,_id})
 				message.success({
 					content:'登录成功',
 					duration: 1.5,

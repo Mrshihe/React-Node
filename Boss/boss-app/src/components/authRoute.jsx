@@ -10,8 +10,8 @@ class AuthRoute extends React.Component {
     if(['/login','/register'].indexOf(pathname) === -1){
       axios.get('/user/info').then(res=>{
         if(res.data.code === 0){
-          const { name, type, title } = res.data.data
-          this.props.userLoginAction({name,type})
+          const { name, type, title, _id } = res.data.data
+          this.props.userLoginAction({name,type,_id})
           type==='staff' ? 
             title ? this.props.history.push('/staff') : this.props.history.push('/staffinfo') 
           : 

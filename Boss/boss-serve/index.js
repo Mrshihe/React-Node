@@ -3,6 +3,10 @@ const cookieParser = require('cookie-parser')
 
 const userRouter = require('./user')
 const toolsRouter = require('./tools')
+const model = require('./mongo')
+
+// 拿到消息表
+const Chat = model.getModel('chat')
 
 const app = express()
 
@@ -23,8 +27,16 @@ io.on('connection',function(socket){
   // 接收客服端消息
   socket.on('sendmsg',function(data){
     console.log(data)
-    //向全局广播消息
-    io.emit('recvmsg',data)
+    const { from, to, content } = data
+    // 根据两个id进行排序生成chatid
+    const chatid = [from,to].sort().join('_')
+    Chat.create({chatid,from,to,content},function(err,doc){
+      if(!err){
+        //向全局广播消息
+        console.log(doc)
+        io.emit('recvmsg',Object.assign({},doc))
+      }
+    })
   })
 })
 

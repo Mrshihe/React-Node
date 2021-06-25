@@ -23,7 +23,7 @@ const models = {
     from: { type:String, require: true },
     to: { type:String, require: true },
     isRead: { type: Boolean, default: false },
-    connect: { type:String, require: true },
+    content: { type:String, require: true },
     createTime: { type:Number, default: new Date().getTime() }
   }
 }
