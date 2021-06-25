@@ -165,3 +165,18 @@ code {
   display: block;
   margin: 80px auto 20px;
 }
+
+.chatWrapper{
+  padding-bottom: 32px;
+}
+.chatWrapper .chatSend{
+  display: flex;
+  position: fixed;
+  z-index: 9;
+  bottom: 0;
+  width: 100%;
+}
+.chatWrapper .chatSend .chatInput{
+  flex: 1;
+  overflow: hidden;
+}

@@ -48,7 +48,7 @@ class SkeletonPage extends React.Component{
     ]
     return (
       <div className="skeletonWrapper">
-        <div className="headerNav">{navList.find(v=>v.path===pathname).title}</div>
+        <div className="headerNav">{ navList.find(v=>v.path===pathname)?.title }</div>
         <Switch>
         {
           navList.map(v => 

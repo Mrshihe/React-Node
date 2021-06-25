@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, Avatar } from 'antd'
 import axios from 'axios'
+import { withRouter } from 'react-router-dom'
 
 
 class Boss extends React.Component{
@@ -16,13 +17,16 @@ class Boss extends React.Component{
       }
     })
   }
+  handleClick = (v)=>{
+    this.props.history.push(`/chat/${v.name}`)
+  }
   render(){
     return(
       <div>
         {
           this.state.list.map(v => {
             return (
-              <Card key={v._id}>
+              <Card key={v._id} onClick={()=>this.handleClick(v)}>
                 <Card.Meta
                   avatar={
                     <Avatar src={ `${process.env.PUBLIC_URL}/headerIcons/${v.avatar}.png` } />
@@ -44,4 +48,4 @@ class Boss extends React.Component{
     )
   }
 }
-export default Boss
+export default withRouter(Boss)

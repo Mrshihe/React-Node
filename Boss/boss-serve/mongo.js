@@ -17,6 +17,14 @@ const models = {
     company: {type: String}, // 公司名称
     money: {type: String}, // 薪资
     jobrequirements: {type: String} //职位要求
+  },
+  chat:{
+    chatid: { type: String, require: true},
+    from: { type:String, require: true },
+    to: { type:String, require: true },
+    isRead: { type: Boolean, default: false },
+    connect: { type:String, require: true },
+    createTime: { type:Number, default: new Date().getTime() }
   }
 }
 

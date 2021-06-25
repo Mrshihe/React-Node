@@ -7,6 +7,7 @@ const model = require('./mongo')
 
 // 拿到用户表
 const User = model.getModel('user')
+const Chat = model.getModel('chat')
  
 Router.get('/list',function(req, res){
   const { type } = req.query
@@ -83,6 +84,12 @@ Router.post('/login',function(req,res){
 Router.post('/logout',function(req,res){
   res.clearCookie('userid')
   res.json({code:0, msg:'您已注销'})
+})
+Router.get(`/msglist`,function(req,res){
+  const { userid } = req.cookies
+  Chat.find({},function(err,doc){
+    if(!err) return res.json({code:0, data:doc})
+  })
 })
 
 module.exports = Router

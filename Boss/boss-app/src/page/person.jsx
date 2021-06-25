@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { userLogoutAction } from '../redux/actions'
 import { Card, Avatar, Button, Modal } from 'antd'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
@@ -12,6 +13,7 @@ function Person(props){
       onOk(){
         axios.post('/user/logout').then(res=>{
           if(res.data.code===0){
+            props.userLogoutAction()
             props.history.push('/login')
           }
         })
@@ -35,5 +37,5 @@ function Person(props){
 }
 
 const mapStateToProps = state => state
-
-export default withRouter(connect(mapStateToProps,null)(Person))
+const mapDispatchToProps = { userLogoutAction }
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Person))
