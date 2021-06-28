@@ -26,7 +26,7 @@ app.use('/tools',toolsRouter)
 io.on('connection',function(socket){
   // 接收客服端消息
   socket.on('sendmsg',function(data){
-    console.log(data)
+    console.log('接收到信息')
     const { from, to, content } = data
     // 根据两个id进行排序生成chatid
     const chatid = [from,to].sort().join('_')
@@ -34,7 +34,7 @@ io.on('connection',function(socket){
       if(!err){
         //向全局广播消息
         console.log(doc)
-        io.emit('recvmsg',Object.assign({},doc))
+        io.emit('recvmsg',doc)
       }
     })
   })

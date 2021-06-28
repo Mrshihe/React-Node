@@ -180,3 +180,9 @@ code {
   flex: 1;
   overflow: hidden;
 }
+.chatWrapper .ant-list-item.rightShow .ant-list-item-meta{
+  flex-direction: row-reverse;
+}
+.chatWrapper .ant-list-item.rightShow .ant-list-item-meta-description{
+  text-align: right;
+}

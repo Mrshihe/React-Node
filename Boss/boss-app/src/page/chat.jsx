@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Button } from 'antd'
+import { Input, Button, List, Avatar } from 'antd'
 import io from 'socket.io-client'
 import axios from 'axios'
 import { connect } from 'react-redux'
@@ -24,9 +24,10 @@ class Chat extends React.Component{
   getMessageList = () => {
     axios.get(`/user/msglist`).then(res =>{
       if(res.data.code===0){
+        const { data } = res.data
         if(this._isMounted){
           this.setState({
-            message:[...this.state.message,...res.data.data]
+            message:[...this.state.message, ...data]
           })
         }
       }
@@ -39,7 +40,7 @@ class Chat extends React.Component{
       const { message } = this.state
       if(this._isMounted){
         this.setState({
-          message: [...message, ...data]
+          message: [...message, data]
         })
       }
     })
@@ -51,12 +52,20 @@ class Chat extends React.Component{
     const { userid } = this.props.match.params
     return (
       <div className="chatWrapper">
-        chat页面{userid}
-        {
-          this.state.message.map(v=>{
-            return <p key={v._id}>{v.content}</p>
-          })
-        }
+        <List>
+          {
+            this.state.message.map((v,i)=>{
+              return (
+                <List.Item key={v._id} className={v.from===userid?'':'rightShow'}>
+                  <List.Item.Meta
+                    avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                    description={v.content}
+                  />
+                </List.Item>
+              )
+            })
+          }
+        </List>
         <div className="chatSend">
           <div className="chatInput"><Input value={ this.state.text } onChange={ this.inputChange } /></div>
           <Button type="primary" onClick={ this.sendMessage }>发送</Button>
