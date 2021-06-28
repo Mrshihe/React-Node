@@ -17,7 +17,7 @@ class Staff extends React.Component{
     })
   }
   handClick = (v)=>{
-    this.props.history.push(`/chat/${v.name}`)
+    this.props.history.push(`/chat/${v._id}`)
   }
   render(){
     return(
