@@ -26,7 +26,6 @@ export const receiveMsg = () => {
   return (dispatch,getState) => {
     const currentUserID = getState().user._id
     socket.on('recvmsg',function(data){
-      console.log('收到信息 actions')
       dispatch({type:MESSAGE_RECEIVE,data,currentUserID})
     })
   }

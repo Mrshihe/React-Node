@@ -6,15 +6,14 @@ import { getMessageList, receiveMsg } from '../redux/actions'
 import Boss from '../page/boss'
 import Staff from '../page/staff'
 import User from '../page/person'
-
-function Msg(){
-  return <h2>消息列表</h2>
-}
+import Message from '../page/message'
 
 class SkeletonPage extends React.Component{
   componentDidMount(){
-    this.props.getMessageList()
-    this.props.receiveMsg()
+    if(!this.props.chat.messageList.lenght){
+      this.props.getMessageList()
+      this.props.receiveMsg()
+    }
   }
   render(){
     const { type } = this.props.user
@@ -42,7 +41,7 @@ class SkeletonPage extends React.Component{
 				text:'消息',
 				icon:'message',
 				title:'消息列表',
-				component: Msg
+				component: Message
 			},
 			{
 				path:'/person',

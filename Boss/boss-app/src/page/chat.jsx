@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Button, List, Avatar, message } from 'antd'
+import { Input, Button, List, Avatar, PageHeader, message } from 'antd'
 import { connect } from 'react-redux'
 import { getMessageList, sendMsg, receiveMsg } from '../redux/actions'
 import { emojiArray } from '../emoji'
@@ -36,14 +36,23 @@ class Chat extends React.Component{
     })
   }
   componentDidMount(){
-    this.props.getMessageList(this.props.match.params.userid)
-    this.props.receiveMsg()
+    if(!this.props.chat.messageList.lenght){
+      this.props.getMessageList(this.props.match.params.userid)
+      this.props.receiveMsg()
+    }
   }
   render(){
     const { userid } = this.props.match.params
     const { chat } = this.props
+    const { emojiShow } = this.state
+    const padbottom = emojiShow ? { paddingBottom: '72px' } : { paddingBottom: '32px' }
     return (
-      <div className="chatWrapper">
+      <div className="chatWrapper" style={ padbottom } >
+        <PageHeader
+          className="chatWrapperHeader"
+          title={ chat?.messageUsers[userid]?.name }
+          onBack={() => this.props.history.goBack() }
+        />
         <List>
           {
             chat.messageList.map((v,i)=>{

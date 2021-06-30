@@ -166,8 +166,20 @@ code {
   margin: 80px auto 20px;
 }
 
-.chatWrapper{
-  padding-bottom: 32px;
+.chatWrapperHeader{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  left: 0;
+  padding: 0 20px;
+  height: 40px;
+  line-height: 40px;
+  background-color: #1890ff;
+  z-index: 9;
+}
+.chatWrapperHeader .ant-page-header-back-button,
+.chatWrapperHeader .ant-page-header-heading-title{
+  color: #fff;
 }
 .chatSendWrapper{
   position: fixed;
