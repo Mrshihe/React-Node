@@ -1,19 +1,9 @@
-import { USER_LOGIN, USER_LOGOUT } from '../constant'
+import { combineReducers } from 'redux'
 
-const defaultState = {
-  name: '',
-  type: ''
-}
+import user from './user'
+import chat from './chat'
 
-const reduce = (state=defaultState, action) => {
-  switch(action.type){
-    case USER_LOGIN:
-      return { ...state, ...action.payload }
-    case USER_LOGOUT:
-      return {...state}
-    default:
-      return state
-  }
-}
-
-export default reduce
+export default combineReducers({
+  user,
+  chat
+})

@@ -88,8 +88,9 @@ Router.post('/logout',function(req,res){
 Router.get(`/msglist`,function(req,res){
   const { userid } = req.cookies
   const { talkid } = req.query
-  const query = talkid ? {'$or':[{_id:userid},{_id:talkid}]} : {}
-  User.find(query,function(err,userdoc){
+  const userquery = talkid ? {'$or':[{_id:userid},{_id:talkid}]} : {}
+  const chatquery = talkid ? { chatid: [talkid,userid].sort().join('_') } : { to: userid }
+  User.find(userquery,function(err,userdoc){
     if(!err){
       let users = {}
       userdoc.forEach(v=>{
@@ -98,10 +99,12 @@ Router.get(`/msglist`,function(req,res){
           avatar: v.avatar
         }
       })
-      // 多条件查询 我发出的和发给我的都查出来
-      Chat.find({'$or':[{from:userid},{to:userid}]},function(err,doc){
+      // 多条件查询 我发出的和发给我的都查出来{'$or':[{from:userid},{to:userid}]}
+      Chat.find(chatquery,function(err,doc){
         if(!err) return res.json({code:0, data:doc, users})
       })
+    }else{
+      return res.json({code:1, msg:'服务端查询失败'})
     }
   })
 })

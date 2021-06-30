@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
+import { getMessageList, receiveMsg } from '../redux/actions'
 
 import Boss from '../page/boss'
 import Staff from '../page/staff'
@@ -11,8 +12,13 @@ function Msg(){
 }
 
 class SkeletonPage extends React.Component{
+  componentDidMount(){
+    this.props.getMessageList()
+    this.props.receiveMsg()
+  }
   render(){
-    const { UserType } = this.props
+    const { type } = this.props.user
+    const { unread } = this.props.chat
     const { pathname } = this.props.location
     const navList = [
       {
@@ -21,7 +27,7 @@ class SkeletonPage extends React.Component{
 				icon:'staff',
 				title:'牛人列表',
 				component: Boss,
-        hide: UserType === 'staff'
+        hide: type === 'staff'
 			},
 			{
 				path:'/staff',
@@ -29,7 +35,7 @@ class SkeletonPage extends React.Component{
 				icon:'boss',
 				title:'BOSS列表',
 				component: Staff,
-        hide: UserType === 'boss'
+        hide: type === 'boss'
 			},
 			{
 				path:'/message',
@@ -68,7 +74,7 @@ class SkeletonPage extends React.Component{
                           className="icon-img"
                           style={{backgroundImage: `url(${pathname===v.path ? process.env.PUBLIC_URL+'/footerIcons/'+v.icon+'-active.png' : process.env.PUBLIC_URL+'/footerIcons/'+v.icon+'.png'})`}}
                         ></div>
-                        { v.path === '/message' ? <sup className="badge-text">99</sup> : null}
+                        { v.path === '/message' ? <sup className="badge-text">{ unread }</sup> : null}
                       </span>
                     </div>
                     <p className="title">{v.text}</p>
@@ -83,9 +89,12 @@ class SkeletonPage extends React.Component{
   }
 }
 
-const mapStateToProps = state => ({
-  UserName: state.name,
-  UserType: state.type
+const mapStateToProps = ({ user, chat }) => ({
+  user, chat
 })
+const mapDispathToProps = {
+  receiveMsg,
+  getMessageList
+}
 
-export default connect(mapStateToProps,null)(SkeletonPage)
+export default connect(mapStateToProps,mapDispathToProps)(SkeletonPage)

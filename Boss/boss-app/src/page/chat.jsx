@@ -1,16 +1,13 @@
 import React from 'react'
 import { Input, Button, List, Avatar, message } from 'antd'
-import io from 'socket.io-client'
-import axios from 'axios'
 import { connect } from 'react-redux'
+import { getMessageList, sendMsg, receiveMsg } from '../redux/actions'
 import { emojiArray } from '../emoji'
-const socket = io('ws://localhost:9000')
+
 class Chat extends React.Component{
   state = {
     text: '',
-    message: [],
-    emojiShow: false,
-    users: []
+    emojiShow: false
   }
   inputChange = (e) => {
     this.setState({
@@ -25,22 +22,8 @@ class Chat extends React.Component{
     const content = this.state.text
     const from = this.props.user['_id']
     const to = this.props.match.params.userid
-    socket.emit('sendmsg',{from,content,to})
+    this.props.sendMsg({from,content,to})
     this.setState({ text: '' , emojiShow: false})
-  }
-  getMessageList = () => {
-    const { userid } = this.props.match.params
-    axios.get(`/user/msglist?talkid=${userid}`).then(res =>{
-      if(res.data.code===0){
-        const { data, users } = res.data
-        if(this._isMounted){
-          this.setState({
-            message:[...this.state.message, ...data],
-            users
-          })
-        }
-      }
-    })
   }
   showEmoji = ()=>{
     this.setState({
@@ -53,34 +36,24 @@ class Chat extends React.Component{
     })
   }
   componentDidMount(){
-    this._isMounted = true
-    this.getMessageList()
-    socket.on('recvmsg', data => {
-      const { message } = this.state
-      if(this._isMounted){
-        this.setState({
-          message: [...message, data]
-        })
-      }
-    })
-  }
-  componentWillUnmount(){
-    this._isMounted = false
+    this.props.getMessageList(this.props.match.params.userid)
+    this.props.receiveMsg()
   }
   render(){
     const { userid } = this.props.match.params
+    const { chat } = this.props
     return (
       <div className="chatWrapper">
         <List>
           {
-            this.state.message.map((v,i)=>{
+            chat.messageList.map((v,i)=>{
               return (
                 <List.Item key={v._id} className={v.from===userid?'':'rightShow'}>
                   <List.Item.Meta
                     avatar={
-                      this.state.users[v.from].avatar.indexOf('http')>-1 
-                      ? <Avatar src={this.state.users[v.from].avatar} />
-                      : <Avatar src={`${process.env.PUBLIC_URL}/headerIcons/${this.state.users[v.from].avatar}.png`} />
+                      chat.messageUsers[v.from].avatar.indexOf('http')>-1 
+                      ? <Avatar src={chat.messageUsers[v.from].avatar} />
+                      : <Avatar src={`${process.env.PUBLIC_URL}/headerIcons/${chat.messageUsers[v.from].avatar}.png`} />
                     }
                     description={v.content}
                   />
@@ -109,7 +82,13 @@ class Chat extends React.Component{
   }
 }
 
-const mapStateToProps = state => ({
-  user: state
+const mapStateToProps = ({ user, chat }) => ({
+  user,
+  chat
 })
-export default connect(mapStateToProps,null)(Chat)
+const mapDispatchToProps = {
+  getMessageList,
+  sendMsg,
+  receiveMsg
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Chat)

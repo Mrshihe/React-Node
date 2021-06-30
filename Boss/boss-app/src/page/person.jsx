@@ -6,7 +6,7 @@ import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 
 function Person(props){
-  const { name, type } = props
+  const { name, type } = props.user
   function logout(){
     Modal.confirm({
       content: '您确认要退出登录？',
@@ -36,6 +36,7 @@ function Person(props){
   )
 }
 
-const mapStateToProps = state => state
+// 只接受state里的user部分
+const mapStateToProps = ({ user }) => ({ user })
 const mapDispatchToProps = { userLogoutAction }
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Person))
