@@ -9,7 +9,8 @@ class Chat extends React.Component{
   state = {
     text: '',
     message: [],
-    emojiShow: false
+    emojiShow: false,
+    users: []
   }
   inputChange = (e) => {
     this.setState({
@@ -28,12 +29,14 @@ class Chat extends React.Component{
     this.setState({ text: '' , emojiShow: false})
   }
   getMessageList = () => {
-    axios.get(`/user/msglist`).then(res =>{
+    const { userid } = this.props.match.params
+    axios.get(`/user/msglist?talkid=${userid}`).then(res =>{
       if(res.data.code===0){
-        const { data } = res.data
+        const { data, users } = res.data
         if(this._isMounted){
           this.setState({
-            message:[...this.state.message, ...data]
+            message:[...this.state.message, ...data],
+            users
           })
         }
       }
@@ -74,7 +77,11 @@ class Chat extends React.Component{
               return (
                 <List.Item key={v._id} className={v.from===userid?'':'rightShow'}>
                   <List.Item.Meta
-                    avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                    avatar={
+                      this.state.users[v.from].avatar.indexOf('http')>-1 
+                      ? <Avatar src={this.state.users[v.from].avatar} />
+                      : <Avatar src={`${process.env.PUBLIC_URL}/headerIcons/${this.state.users[v.from].avatar}.png`} />
+                    }
                     description={v.content}
                   />
                 </List.Item>

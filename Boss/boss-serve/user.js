@@ -87,8 +87,22 @@ Router.post('/logout',function(req,res){
 })
 Router.get(`/msglist`,function(req,res){
   const { userid } = req.cookies
-  Chat.find({},function(err,doc){
-    if(!err) return res.json({code:0, data:doc})
+  const { talkid } = req.query
+  const query = talkid ? {'$or':[{_id:userid},{_id:talkid}]} : {}
+  User.find(query,function(err,userdoc){
+    if(!err){
+      let users = {}
+      userdoc.forEach(v=>{
+        users[v._id] = {
+          name: v.name,
+          avatar: v.avatar
+        }
+      })
+      // 多条件查询 我发出的和发给我的都查出来
+      Chat.find({'$or':[{from:userid},{to:userid}]},function(err,doc){
+        if(!err) return res.json({code:0, data:doc, users})
+      })
+    }
   })
 })
 
