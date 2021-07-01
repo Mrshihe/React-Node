@@ -1,8 +1,12 @@
 import React from 'react'
-import { List, Avatar } from 'antd'
+import { List, Avatar, Badge } from 'antd'
 import { connect } from 'react-redux'
+import {} from 'react-router-dom'
 
 class Message extends React.Component {
+  toChat = (id) => {
+    this.props.history.push(`/chat/${id}`)
+  }
   render(){
     const { user, chat } = this.props 
     const chatMsgGroup = {} 
@@ -11,16 +15,25 @@ class Message extends React.Component {
       chatMsgGroup[v.chatid].push(v)
     })
     const getLast = arr => arr[arr.length-1]
-    const chatList = Object.values(chatMsgGroup) || []
+    // 将聊天信息分组展示，并且最新的消息在前边
+    const chatList = Object.values(chatMsgGroup).sort((a,b)=>{
+      const a_last = getLast(a).createTime
+      const b_last = getLast(b).createTime
+      return b_last - a_last
+    }) || []
     return (
       <div className="messageWrapper">
         <List>
           {
             chatList.map(v => {
               const last = getLast(v)
-              console.log(last)
+              const unread = v.filter(v=>!v.isRead).length
               return (
-                <List.Item key={ last._id }>
+                <List.Item 
+                  key={ last._id } 
+                  extra={ <Badge count={ unread } /> }
+                  onClick={ () => this.toChat(last.from) }
+                >
                   <List.Item.Meta
                     avatar={
                       chat.messageUsers[last.from].avatar.indexOf('http') > -1
@@ -43,7 +56,5 @@ class Message extends React.Component {
 const mapStateToProps = ({ user, chat }) => ({
   user, chat
 })
-
-const mapDispathToProps = {}
 
 export default connect(mapStateToProps,null)(Message) 

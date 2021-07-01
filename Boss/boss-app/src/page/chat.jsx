@@ -73,7 +73,9 @@ class Chat extends React.Component{
         </List>
         <div className="chatSendWrapper">
           <div className="chatSend">
-            <div className="chatInput"><Input value={ this.state.text } onChange={ this.inputChange } /></div>
+            <div className="chatInput">
+              <Input value={ this.state.text } onChange={ this.inputChange } placeholder="请输入" />
+            </div>
             <Button onClick={ this.showEmoji }>😀</Button>
             <Button type="primary" onClick={ this.sendMessage }>发送</Button>
           </div>
