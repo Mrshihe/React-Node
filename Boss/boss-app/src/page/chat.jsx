@@ -9,6 +9,7 @@ class Chat extends React.Component{
     text: '',
     emojiShow: false
   }
+  wrapper = React.createRef()
   inputChange = (e) => {
     this.setState({
       text: e.target.value
@@ -36,10 +37,16 @@ class Chat extends React.Component{
     })
   }
   componentDidMount(){
+    const { scrollHeight  } = this.wrapper.current
+    this.wrapper.current.scrollTop = scrollHeight
     if(!this.props.chat.messageList.length){
       this.props.getMessageList(this.props.match.params.userid)
       this.props.receiveMsg(this.props.location.pathname)
     } 
+  }
+  componentDidUpdate(){
+    const { scrollHeight  } = this.wrapper.current
+    this.wrapper.current.scrollTop = scrollHeight
   }
   componentWillUnmount(){
     this.props.readMsg(this.props.match.params.userid)
@@ -50,7 +57,7 @@ class Chat extends React.Component{
     const { emojiShow } = this.state
     const padbottom = emojiShow ? { paddingBottom: '72px' } : { paddingBottom: '32px' }
     return (
-      <div className="chatWrapper" style={ padbottom } >
+      <div className="chatWrapper" style={ padbottom } ref={ this.wrapper }>
         <PageHeader
           className="chatWrapperHeader"
           title={ chat?.messageUsers[userid]?.name }

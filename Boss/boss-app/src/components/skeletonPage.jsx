@@ -11,7 +11,6 @@ import Message from '../page/message'
 class SkeletonPage extends React.Component{
   componentDidMount(){
     if(!this.props.chat.messageList.length){
-      console.log('进入承接页')
       this.props.getMessageList()
       this.props.receiveMsg(this.props.location.pathname)
     }
