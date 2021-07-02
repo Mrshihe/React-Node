@@ -1,4 +1,4 @@
-import { MESSAGE_LIST, MESSAGE_RECEIVE } from '../constant'
+import { MESSAGE_LIST, MESSAGE_RECEIVE, MESSAGE_READ } from '../constant'
 
 const defaultState = {
   messageList: [],
@@ -16,6 +16,12 @@ const reduce = (state =defaultState, action) => {
     case MESSAGE_RECEIVE:
       const n = action.data.from === action.currentUserID ? 0 : 1 
       return { ...state, messageList:[...state.messageList, action.data], unread: state.unread+n }
+    case MESSAGE_READ:
+      const { fromid, num } = action
+      return { ...state, messageList: state.messageList.map(v=>{
+        if(fromid === v.from) v.isRead = true
+        return v
+      }), unread: state.unread - num }
     default:
       return state
   }

@@ -108,5 +108,19 @@ Router.get(`/msglist`,function(req,res){
     }
   })
 })
+Router.post(`/readmsg`, function(req, res){
+  const { fromid } = req.body
+  const { userid } = req.cookies
+  console.log( fromid, userid )
+  // multi：true 修改多行
+  Chat.update({from:fromid,to:userid},{'$set':{isRead:true}},{'multi':true},function(err,doc){
+    if(!err){ 
+      console.log(doc)
+      return res.json({code:0, data: doc.nModified})
+    }else{
+      return res.json({code:1, msg:'服务器更新失败'})
+    }
+  })
+})
 
 module.exports = Router

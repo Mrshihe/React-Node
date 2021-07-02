@@ -1,7 +1,7 @@
 import React from 'react'
 import { Input, Button, List, Avatar, PageHeader, message } from 'antd'
 import { connect } from 'react-redux'
-import { getMessageList, sendMsg, receiveMsg } from '../redux/actions'
+import { getMessageList, sendMsg, receiveMsg, readMsg, stopRece } from '../redux/actions'
 import { emojiArray } from '../emoji'
 
 class Chat extends React.Component{
@@ -36,10 +36,13 @@ class Chat extends React.Component{
     })
   }
   componentDidMount(){
-    if(!this.props.chat.messageList.lenght){
+    if(!this.props.chat.messageList.length){
       this.props.getMessageList(this.props.match.params.userid)
-      this.props.receiveMsg()
-    }
+      this.props.receiveMsg(this.props.location.pathname)
+    } 
+  }
+  componentWillUnmount(){
+    this.props.readMsg(this.props.match.params.userid)
   }
   render(){
     const { userid } = this.props.match.params
@@ -100,6 +103,8 @@ const mapStateToProps = ({ user, chat }) => ({
 const mapDispatchToProps = {
   getMessageList,
   sendMsg,
-  receiveMsg
+  receiveMsg,
+  readMsg,
+  stopRece
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Chat)

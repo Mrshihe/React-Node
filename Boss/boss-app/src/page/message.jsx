@@ -8,7 +8,7 @@ class Message extends React.Component {
     this.props.history.push(`/chat/${id}`)
   }
   render(){
-    const { user, chat } = this.props 
+    const { chat } = this.props 
     const chatMsgGroup = {} 
     chat.messageList.forEach(v => {
       chatMsgGroup[v.chatid] = chatMsgGroup[v.chatid] || []
